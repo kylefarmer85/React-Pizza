@@ -1,6 +1,30 @@
 import React, { Component } from 'react';
 import Pizza from '../components/Pizza'
 class PizzaList extends Component {
+  constructor(){
+    super()
+    this.state = {
+      pizzas: []
+    }
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:3000/pizzas')
+    .then(resp => resp.json())
+    .then(pizzas => { console.log(pizzas)
+      this.setState({
+        pizzas: pizzas
+      })
+    })
+  }
+
+  renderPizza() {
+    return this.state.pizzas.map(pizza => {
+      return <Pizza info={pizza} key={pizza.id} />
+    })
+  } 
+
+
 
   render() {
     return (
@@ -15,7 +39,7 @@ class PizzaList extends Component {
         </thead>
         <tbody>
           {
-            //render Pizza here
+            this.state.pizzas.length > 0 ? this.renderPizza() : null
           }
         </tbody>
       </table>
